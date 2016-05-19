@@ -1,0 +1,45 @@
+﻿@model Writtit.Models.Post
+@{
+    ViewBag.Title = "ViewPostDetail";
+}
+<br/><br/>
+<div class="container">
+    <div class="col-xs-9 panel-group">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <h4>@Model.Title</h4>
+                Company: @Model.Company <br/>
+                Category: @ViewBag.CategoryName
+            </div>
+
+            <div class="panel-body">@Html.Raw(Model.Content)</div>
+            <div class="panel-footer">
+                <div class="form-inline">
+                    @foreach (var item in Model.Tags)
+                    {
+
+                        using (Html.BeginForm("BlogIndex", "Blog", FormMethod.Post, new { @style = "padding: 0px; height: 15px", @class = "form-group" }))
+                        {
+                            @Html.Hidden("SearchField", item.Name)
+                            @Html.Hidden("SearchType", "Tag")
+                            <button type="submit" class="btn btn-primary btn-xs"><span class="glyphicon glyphicon-tag"></span> @item.Name</button>
+                        }
+                    }
+                </div>
+                <br/>
+                <div>
+                    <center>Post created: @Model.DateTime.ToShortDateString()</center>
+                </div>  
+            </div>
+        </div>
+
+
+
+
+    </div>
+    <div>
+        @{
+            Html.RenderAction("SidebarPartial");
+        }
+    </div>
+</div>

@@ -1,0 +1,75 @@
+﻿
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="jumbotron">
+    <center><img src="~/Content/logo.png" class="animated zoomIn"/></center>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <h4>What is Writtit?</h4>
+        <p>Writtit is a company that is passionate about helping Cleveland's technology industry grow and succeed.</p>
+        <p style="line-height: normal"> Our goal is to expose the burgeoning growth of the Cleveland tech community by keeping Writtit's readers up to date on new companies, featuring companies that are thriving, and keeping readers informed on where the tech industry is moving.</p>
+        <p> We do all this with the Writtit blog - a dynamic and informative window into the latest happenings in Cleveland's tech scene.</p>
+        <br/>
+        <div class='row'>
+            <div class='col-md-offset-2 col-md-8'>
+                <div class="carousel slide" data-ride="carousel" id="quote-carousel">
+                    <ol class="carousel-indicators">
+                        <li data-target="#quote-carousel" data-slide-to="0" class="active"></li>
+                        <li data-target="#quote-carousel" data-slide-to="1"></li>
+                        <li data-target="#quote-carousel" data-slide-to="2"></li>
+                    </ol>
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <blockquote>
+                                <div class="row">
+                                    <div class="col-sm-3 text-center">
+                                        <img class="img-circle" src="http://images5.fanpop.com/image/photos/28700000/u-can-t-see-me-3-john-cena-28737044-300-149.gif" style="width: 90px; height: 90px">
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>What was I supposed to say again?</p>
+                                        <small>John Cena</small>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </div>
+                        <div class="item">
+                            <blockquote>
+                                <div class="row">
+                                    <div class="col-sm-3 text-center">
+                                        <img class="img-circle" src="https://media.giphy.com/media/GhxhCIa8eYqti/giphy.gif" style="width: 90px; height: 90px">
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>It's Pretttyy Good!</p>
+                                        <small>Dwayne "TheRock" Johnson</small>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </div>
+                        <div class="item">
+                            <blockquote>
+                                <div class="row">
+                                    <div class="col-sm-3 text-center">
+                                        <img class="img-circle" src="http://i.imgur.com/6fOdbFS.gif" style="width: 90px; height: 90px">
+                                    </div>
+                                    <div class="col-sm-9">
+                                        <p>Bark!</p>
+                                        <small>A Dog</small>
+                                    </div>
+                                </div>
+                            </blockquote>
+                        </div>
+                    </div>
+
+                    <a data-slide="prev" href="#quote-carousel" class="left carousel-control"><i class="fa fa-chevron-left"></i></a>
+                    <a data-slide="next" href="#quote-carousel" class="right carousel-control"><i class="fa fa-chevron-right"></i></a>
+                </div>
+            </div>
+        </div>
+        <center>
+            <p>@Html.ActionLink("Visit Our Blog", "BlogIndex", "Blog", null, new {@class = "btn btn-primary btn-lg"})</p></center>
+    </div>
+</div>

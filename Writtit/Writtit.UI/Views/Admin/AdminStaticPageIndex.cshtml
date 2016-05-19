@@ -1,0 +1,68 @@
+﻿@model IEnumerable<Writtit.Models.Page>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h4><span class="glyphicon glyphicon-cog"></span> Administrative Page Index</h4>
+
+<p>
+    @Html.ActionLink("Create New Page", "CreateStaticPage", null, new { @class = "btn btn-sm btn-primary" })
+</p>
+<table id="wrapper2" class="table table-striped table-hover">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Title)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Content)
+        </th>
+        @*<th>
+            Home Page
+        </th>*@
+        <th></th>
+    </tr>
+
+    @for (int i = 0; i < Model.Count(); i++)
+    {
+        if (!Model.ElementAt(i).IsHidden)
+        {
+            <tr>
+                <td>
+                    <p>@Html.DisplayFor(modelItem => Model.ElementAt(i).Title)</p>
+                </td>
+                <td id="" class="dot-height-35 dot-ellipsis" style="">
+                    @Html.Raw(Model.ElementAt(i).Content)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "EditPage", "Admin", new {id = Model.ElementAt(i).PageID}, new {@class = "btn btn-primary btn-sm"})
+                    @Html.ActionLink("Delete", "RemoveStaticPage", "Admin", new {id = Model.ElementAt(i).PageID}, new {@class = "btn btn-danger btn-sm"})
+
+                </td>
+                @*<td>
+                    <input class="checkbox" id="IsHome" name="Model.IsHome" type="checkbox">
+                </td>*@
+            </tr>
+        }
+    }
+
+</table>
+
+
+@section scripts{
+<script>
+    $("#wrapper").dotdotdot({
+        
+    });
+
+    $('#wrapper2').click(function () {
+        var checkedState = $(this).prop("checked")
+        $(this)
+              .parent('table')
+              .children('.checkbox:checked')
+              .prop("checked", false);
+
+        $(this).prop("checked", checkedState);
+    });
+</script>
+}

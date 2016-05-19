@@ -1,0 +1,152 @@
+﻿@using System.Text.RegularExpressions
+@using Writtit.UI.Models
+@model Writtit.UI.Models.IndexViewModels
+
+@{
+    ViewBag.Title = "BlogIndex";
+}
+<br/>
+<div class="col-xs-9 panel-group">
+    <div class="form-group form-inline row" style="background-color: lightgrey; align-content: space-around; text-align: right; padding-right: 15px">
+        @using (Html.BeginForm("BlogIndex", "Blog", FormMethod.Post))
+        {
+            <span id="SearchField">
+                @Html.TextBoxFor(m => m.SearchField, new {@class = "form-control", style = "width: 200px", placeholder = "Enter search..."})
+            </span>
+            <span id="CategoryField" style="display: none">
+                @Html.DropDownListFor(m => m.CategoryField, Model.Categories, new {@class = "form-control", style = "width: 200px", id = "CategoryField"})
+            </span>
+            <span onchange="checkSearchType(this)">
+                @Html.DropDownListFor(m => m.SearchType, Model.SearchSelect, new {@class = "form-control", style = "width: 150px", id = "SearchType"})
+            </span>
+            <button type="submit" class="btn btn-primary">Search</button><br/>
+        }
+    </div>
+    @for (int i = 0; i < Model.SearchList.Count; i++)
+    {
+        if (!Model.SearchList[i].IsHidden && Model.SearchList[i].IsApproved)
+        {
+            if (i < 5)
+            {
+                <div class="col-md-6">
+                    <div class="card darken-1 hoverable z-depth-3" style="height: 400px">
+
+                        <div class="card-image" style="height: 100px">
+                            <div class="view overlay hm-white-slight z-depth-1" style="height: 100px">
+                                @if (Model.SearchList[i].Content.Contains("<img"))
+                                {
+                                    <img src="@Regex.Match(Model.SearchList[i].Content, "src\\s*=\\s*\"(.+?)\"").Value.Substring(5).TrimEnd('"')" class="img-responsive" alt="" width="300" height="150">
+                                }
+                                else
+                                {
+                                    <img src="http://cityhub.movoto.com/1458205903931_westlake-ohio-safe-and-family-oriented-featured.jpg" class="img-responsive" alt="" width="300" height="150">
+                                }
+                            </div>
+                        </div>
+                        <div class="card-content white-text">
+                            <span class="card-title">@Html.ActionLink(Model.SearchList[i].Title, "PostDetails", "Blog", new {id = @Model.SearchList[i].PostID}, new {@style = "font-size: .75em"})</span>
+                            <div style="color: sienna !important"><span class="glyphicon glyphicon-time"></span>  @Model.SearchList[i].DateTime.ToString("d")</div>
+                            <div style="color: sienna !important"><span class="glyphicon glyphicon-user"></span>  @Model.SearchList[i].UserEmail</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="wrapper1" class="dot-height-70 dot-ellipsis post-preview-text">@Html.Raw(Model.SearchList[i].Content)</div>
+                            <br/>
+
+                            <div class="btn-group form-inline">
+
+                                @for (int j = 0; j < 3; j++)
+                                {
+                                    if (j < Model.SearchList[i].Tags.Count)
+                                    {
+                                        <form action="/Blog/BlogIndex" class="form-group" method="post">
+                                            @Html.HiddenFor(m => m.SearchField, new {Value = Model.SearchList[i].Tags[j].Name})
+                                            @Html.HiddenFor(m => m.SearchType, new {Value = "Tag"})
+                                            <button type="submit" class="btn btn-primary align-center btn-xs"><span class="glyphicon glyphicon-tag"></span> @Model.SearchList[i].Tags[j].Name</button>
+                                        </form>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-6">
+                    <div class="card white darken-1 hoverable z-depth-3 wow fadeInUp" style="height: 400px">
+
+                        <div class="card-image" style="height: 100px">
+                            <div class="view overlay hm-white-slight z-depth-1" style="height: 100px">
+                                @if (Model.SearchList[i].Content.Contains("<img"))
+                                {
+                                    <img src="@Regex.Match(Model.SearchList[i].Content, "src\\s*=\\s*\"(.+?)\"").Value.Substring(5).TrimEnd('"')" class="img-responsive" alt="" width="300" height="150">
+                                }
+                                else
+                                {
+                                    <img src="http://cityhub.movoto.com/1458205903931_westlake-ohio-safe-and-family-oriented-featured.jpg" class="img-responsive" alt="" width="300" height="150">
+                                }
+                            </div>
+                        </div>
+                        <div class="card-content white-text">
+                            <span class="card-title">@Html.ActionLink(Model.SearchList[i].Title, "PostDetails", "Blog", new { id = @Model.SearchList[i].PostID }, new { @style = "font-size: .75em" })</span>
+                            <div style="color: sienna !important">@Model.SearchList[i].DateTime.ToString("d")</div>
+                            <div style="color: sienna !important">@Model.SearchList[i].UserEmail</div>
+                        </div>
+                        <div class="panel-body">
+                            <div id="wrapper1" class="dot-height-70 dot-ellipsis post-preview-text">@Html.Raw(Model.SearchList[i].Content)</div>
+                            <br />
+
+                            <div class="btn-group form-inline">
+
+                                @for (int j = 0; j < 3; j++)
+                                {
+                                    if (j < Model.SearchList[i].Tags.Count)
+                                    {
+                                        <span>
+                                            <form action="/Blog/BlogIndex" class="form-group" method="post">
+                                                @Html.HiddenFor(m => m.SearchField, new { Value = Model.SearchList[i].Tags[j].Name })
+                                                @Html.HiddenFor(m => m.SearchType, new { Value = "Tag" })
+                                                <button type="submit" class="btn btn-primary align-center btn-xs"><span class="glyphicon glyphicon-tag"></span> @Model.SearchList[i].Tags[j].Name</button>
+                                            </form>
+                                        </span>
+                                    }
+                                }
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+
+        }
+    }
+</div>
+@Html.Action("SidebarPartial", "Blog")
+
+@section scripts{
+    <script>
+        $(document).ready(function() {
+            $("#wrapper1").dotdotdot({
+            
+            });
+            checkSearchType();
+        });
+
+        function checkSearchType() {
+            if (document.getElementById("SearchType").value != "Category") {
+                document.getElementById("SearchField").style.display = "initial";
+                document.getElementById("CategoryField").style.display = "none";
+            } else {
+                document.getElementById("SearchField").style.display = "none";
+                document.getElementById("CategoryField").style.display = "initial";
+            }
+        }
+    </script>
+
+    <script type="text/javascript">
+        $(function() {
+            new WOW().init();
+        });
+    </script>
+}

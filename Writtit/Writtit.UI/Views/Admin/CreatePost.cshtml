@@ -1,0 +1,118 @@
+﻿@using Writtit.Models
+@model Writtit.UI.Models.AddPostViewModels
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h4><span class="glyphicon glyphicon-cog"></span> Create New Post</h4>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        @Html.HiddenFor(m => m.Post.UserEmail, new { Value = User.Identity.Name })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Post.Company, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValidationMessageFor(model => model.Post.Company, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Post.Company, new {htmlAttributes = new {@class = "form-control", placeholder = "Enter company..."}})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Post.Title, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValidationMessageFor(model => model.Post.Title, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Post.Title, new {htmlAttributes = new {@class = "form-control", placeholder = "Enter title..."}})
+            </div>
+        </div>
+
+        @Html.HiddenFor(m => m.Post.DateTime, new { Value = DateTime.Now })
+
+        @if (User.IsInRole("Admin"))
+        {
+            @Html.HiddenFor(m => m.Post.IsApproved, new { Value = true })
+        }
+
+    <div class="form-group">
+            <div class="form-inline">
+                <label class="control-label col-md-2">Category</label>
+                <div class="col-md-10">
+                    @Html.ValidationMessageFor(model => model.Post.CategoryID, "", new {@class = "text-danger"})
+                    @Html.DropDownListFor(model => model.Post.CategoryID, Model.Categories, new {@class = "form-control", @style = "width: 300px"})
+                    @if (User.IsInRole("Admin"))
+                    {
+                        <span class="btn btn-default glyphicon glyphicon-plus-sign" data-toggle="modal" data-target="#categoryModal"></span>
+                    }
+                </div>
+            </div>
+    </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Post.Content, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValidationMessageFor(model => model.Post.Content, "", new { @class = "text-danger" })
+                @Html.TextAreaFor(model => model.Post.Content, new {htmlAttributes = new {@class = "form-control"}})
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Tags, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.ValidationMessageFor(model => model.Tags, "", new { @class = "text-danger" })
+                @Html.EditorFor(model => model.Tags, new {htmlAttributes = new {@class = "form-control", @id = "tags"}})
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input id="submitContent" type="submit" value="Create" class="btn btn-default"/>
+                @Html.ActionLink("Cancel", "BlogIndex", "Blog", null, new {@class="btn btn-danger"})
+            </div>
+        </div>
+    </div>
+}
+
+<div>
+    
+</div>
+
+<div id="categoryModal" class="modal fade">
+    <div class="modal-content">
+        @Html.Partial("_CategoriesPartial",new Category())
+    </div>
+</div>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+<script src='//cdn.tinymce.com/4/tinymce.min.js'></script>
+    <script type="text/javascript">
+        tinymce.init({
+            mode: "textareas",
+            plugins: [
+                "advlist autolink lists link image charmap print preview anchor",
+                "searchreplace visualblocks code fullscreen",
+                "insertdatetime table contextmenu paste"
+            ],
+            toolbar: "insertfile undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | numlist outdent indent | link image"
+        });
+    </script>
+    <script>
+        $('#tags').tagsInput();
+    </script>
+    <script>
+        $("#submitContent").click(function () {
+            tinyMCE.triggerSave();
+            var status;
+            status = $("#myform").valid();
+            if (status == true) {
+            }
+        });
+    </script>
+}

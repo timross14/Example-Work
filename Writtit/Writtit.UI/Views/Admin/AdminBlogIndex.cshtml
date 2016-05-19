@@ -1,0 +1,102 @@
+﻿@model List<Writtit.Models.Post>
+
+@{
+    ViewBag.Title = "AdminBlogIndex";
+}
+
+
+
+<h4><span class="glyphicon glyphicon-cog"></span> Manage Post Status</h4>
+
+@using (Html.BeginForm("AdminBlogIndex", "Admin", FormMethod.Post))
+{
+    <table class="table table-striped">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.FirstOrDefault().Title)
+            </th>
+            <th>
+                Author Email
+            </th>
+            <th>
+                Date Posted
+            </th>
+            <th>
+                Approved
+            </th>
+            <th>
+                Hidden
+            </th>
+            <th></th>
+        </tr>
+
+        @for (int i = 0; i < Model.Count; i++)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => Model[i].UserEmail)
+                </td>
+                <td>
+                    @Model[i].DateTime.ToShortDateString()
+                </td>
+                <td>
+                    @if (Model[i].IsApproved)
+                    {
+                        <input class="check-box" data-val="true" data-val-required="The IsApproved field is required." id="IsApproved" name="postChange[@i].IsApproved" type="checkbox" value="true" checked="checked" onclick='highlight(this)'>
+                    }
+                    else
+                    {
+                        <input class="check-box" data-val="true" data-val-required="The IsApproved field is required." id="IsApproved" name="postChange[@i].IsApproved" type="checkbox" value="true" onclick='highlight(this)'>
+                    }
+                </td>
+                <td>
+                    @if (Model[i].IsHidden)
+                    {
+                        <input class="check-box" data-val="true" data-val-required="The IsHidden field is required." id="IsHidden" name="postChange[@i].IsHidden" type="checkbox" value="true" checked="checked" onclick='highlight(this)'>
+                    }
+                    else
+                    {
+                        <input class="check-box" data-val="true" data-val-required="The IsHidden field is required." id="IsHidden" name="postChange[@i].IsHidden" type="checkbox" value="true" onclick='highlight(this)'>
+                    }
+                </td>
+                <td>
+                    <input type="hidden" name="postChange[@i].PostID" value="@Model[i].PostID"/>
+                </td>
+            </tr>
+        }
+    </table>
+    <div>
+        <center><button class="btn btn-primary">Save</button></center>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript">
+        function highlight(obj) {
+            $(obj).parent().parent().delay(3000).css("background", "lightgreen");
+        }
+    </script>
+    @*<script>
+        var uri = 'api/TagsApi';
+
+        $
+        })
+   </script>*@
+    <script>
+        $.fn.bootstrapSwitch.defaults.size = 'small';
+        $.fn.bootstrapSwitch.defaults.handleWidth = '50px';
+        $("[id='IsHidden']").bootstrapSwitch();
+        $("[id='IsApproved']").bootstrapSwitch();
+        $.fn.bootstrapSwitch.OnClick(
+            $(obj).parent().parent().css("background-color", "lightgreen"));
+
+    </script>
+    <script type="text/javascript">
+        function highlight(obj) {
+            $(obj).parent().parent().delay(3000).css("background", "lightgreen");
+        }
+    </script>
+}

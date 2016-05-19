@@ -1,0 +1,109 @@
+﻿@using Microsoft.AspNet.Identity
+@model List<Writtit.Models.UserRoleModel>
+@{
+    ViewBag.Title = "AdminUserIndex";
+}
+
+<h4><span class="glyphicon glyphicon-cog"></span> Administrative User Index</h4>
+
+@*<h4>Index</h4>*@
+<div id="roleForm">
+    @using (Html.BeginForm("AdminUserIndex", "Admin", FormMethod.Post))
+    {
+        <table class="table table-striped" style="width:80%">
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().RoleID)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.FirstOrDefault().Name)
+                </th>
+               
+            </tr>
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                if (User.Identity.GetUserName() != Model[i].Email)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => Model[i].Email)
+                        </td>
+                        <td>
+                            @if (Model[i].RoleID == null)
+                            {
+                                <span>N/A</span>
+                            }
+                            else
+                            {
+                                @Html.DisplayFor(modelItem => Model[i].RoleID)
+                            }
+
+                        </td>
+                        <td>
+                            @switch (Model[i].RoleID)
+                            {
+                                case 3:
+                                    <select class="form-control" data-val="true" data-val-required="The UserChange field is required." id="item_UserChange" name="roleChange[@i].UserChange">
+                                        <option value="1">Admin</option>
+                                        <option value="2">Contributor</option>
+                                        <option value="3" selected="selected">User</option>
+                                    </select>
+                                    break;
+                                case 1:
+                                    <select class="form-control" data-val="true" data-val-required="The UserChange field is required." id="item_UserChange" name="roleChange[@i].UserChange">
+                                        <option value="1" selected="selected">Admin</option>
+                                        <option value="2">Contributor</option>
+                                        <option value="3">User</option>
+                                    </select>
+                                    break;
+                                case 2:
+                                    <select class="form-control" data-val="true" data-val-required="The UserChange field is required." id="item_UserChange" name="roleChange[@i].UserChange">
+                                        <option value="1">Admin</option>
+                                        <option value="2" selected="selected">Contributor</option>
+                                        <option value="3">User</option>
+                                    </select>
+                                    break;
+                            }
+
+                            <input type="hidden" name="roleChange[@i].Email" value="@Model[i].Email"/>
+                            <input type="hidden" name="roleChange[@i].RoleID" value="@Model[i].RoleID"/>
+                        </td>
+                    </tr>
+                }
+                else
+                {
+                    <input type="hidden" name="roleChange[@i].Email" value="@Model[i].Email" />
+                    <input type="hidden" name="roleChange[@i].RoleID" value="@Model[i].RoleID"/>
+                    <input type="hidden" name="roleChange[@i].UserChange" value="@Model[i].RoleID" />
+                }
+            }
+        <tr>
+             <td>
+                <button class="btn btn-primary btn-sm" style="padding: 3px">Change</button>
+            </td>
+            <td></td>
+        <td></td>
+        </tr>
+        </table>
+    }
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+        $(function () {
+            $(".button").click(function() {
+                $.ajax({
+                    type: 'POST',
+                    url: '/Admin/UpdatePermissions',
+                    data: dataString,
+                    success: function() {
+                        alert("Success");
+                    }
+                });
+            });
+        })
+    </script>
+}
